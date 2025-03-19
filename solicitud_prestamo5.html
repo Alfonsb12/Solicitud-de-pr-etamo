@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud de Préstamos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #E6E6FA;
+            color: #4B0082;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #800080;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, select, button {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #800080;
+        }
+        button {
+            background-color: #800080;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4B0082;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Solicitud de Préstamo</h1>
+        <p>Completa el siguiente formulario para solicitar tu préstamo en línea.</p>
+        <form id="loanForm" action="https://formspree.io/f/xzzedggg" method="POST" onsubmit="return validateForm()">
+            <!-- Nombre completo -->
+            <input type="text" name="nombre" id="nombre" placeholder="Nombre completo" required>
+            
+            <!-- Fecha de nacimiento -->
+            <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" required>
+            
+            <!-- CURP -->
+            <input type="text" name="curp" id="curp" placeholder="CURP" required>
+            
+            <!-- Número de teléfono -->
+            <input type="tel" name="telefono" id="telefono" placeholder="Número de teléfono" required pattern="^\d{10}$" title="Debe ser un número de 10 dígitos">
+            
+            <!-- Correo electrónico -->
+            <input type="email" name="correo" id="correo" placeholder="Correo electrónico" required>
+            
+            <!-- Dirección -->
+            <input type="text" name="direccion" id="direccion" placeholder="Dirección" required>
+            
+            <!-- A qué te dedicas -->
+            <input type="text" name="dedicacion" id="dedicacion" placeholder="A qué te dedicas" required>
+            
+            <!-- Ingresos mensuales -->
+            <input type="number" name="ingresos_mensuales" id="ingresos_mensuales" placeholder="Ingresos mensuales" required min="1000" max="50000">
+            
+            <!-- Monto solicitado -->
+            <input type="number" name="monto" id="monto" placeholder="Monto solicitado" required min="200" max="5000">
+            
+            <!-- Plazo del préstamo -->
+            <select name="plazo" id="plazo" required>
+                <option value="">Selecciona el plazo</option>
+                <option value="1 quincena">1 quincena</option>
+                <option value="2 quincenas">2 quincenas</option>
+                <option value="4 quincenas">4 quincenas</option>
+                <option value="6 quincenas">6 quincenas</option>
+            </select>
+            
+            <button type="submit">Solicitar Préstamo</button>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            // Validar nombre completo
+            var nombre = document.getElementById("nombre").value;
+            var nombreRegex = /^[a-zA-Z\s]+$/; // Solo letras y espacios
+            if (!nombre.match(nombreRegex)) {
+                alert("Por favor, ingresa un nombre válido (solo letras).");
+                return false;
+            }
+
+            // Validar correo electrónico
+            var correo = document.getElementById("correo").value;
+            var correoRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!correo.match(correoRegex)) {
+                alert("Por favor, ingresa un correo electrónico válido.");
+                return false;
+            }
+
+            // Validar monto solicitado (entre 200 y 5000)
+            var monto = document.getElementById("monto").value;
+            if (monto < 200 || monto > 5000) {
+                alert("El monto solicitado debe estar entre 200 y 5000.");
+                return false;
+            }
+
+            // Validar que se haya seleccionado un plazo
+            var plazo = document.getElementById("plazo").value;
+            if (plazo === "") {
+                alert("Por favor, selecciona un plazo.");
+                return false;
+            }
+
+            // Validar número de teléfono (10 dígitos)
+            var telefono = document.getElementById("telefono").value;
+            var telefonoRegex = /^\d{10}$/;
+            if (!telefono.match(telefonoRegex)) {
+                alert("Por favor, ingresa un número de teléfono válido (10 dígitos).");
+                return false;
+            }
+
+            // Validar CURP (debe ser una cadena alfanumérica de 18 caracteres)
+            var curp = document.getElementById("curp").value;
+            var curpRegex = /^[A-Z0-9]{18}$/; // Validación CURP: solo alfanumérico y 18 caracteres
+            if (!curp.match(curpRegex)) {
+                alert("La CURP debe tener 18 caracteres alfanuméricos.");
+                return false;
+            }
+
+            // Validar ingresos mensuales
+            var ingresos = document.getElementById("ingresos_mensuales").value;
+            if (ingresos < 1000 || ingresos > 50000) {
+                alert("Los ingresos mensuales deben estar entre 1,000 y 50,000.");
+                return false;
+            }
+
+            return true; // Si todo está bien, el formulario se envía
+        }
+    </script>
+</body>
+</html>
